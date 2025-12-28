@@ -42,18 +42,30 @@ public class UserDto {
         private String password;
     }
 
+    // 프로필 수정 요청
+    @Getter
+    @Setter
+    public static class Update {
+        @Size(min = 2, max = 20)
+        private String nickname;
+
+        @Email
+        private String email;
+
+        private String profileImageUrl;
+    }
+
     // 응답
     // 비밀번호는 제외
     @Getter
-    @Setter
     public static class Response {
-        private Long id;
-        private String userId;
-        private String nickname;
-        private String email;
-        private String profileImageUrl;
-        private String role;
-        private LocalDateTime createdAt;
+        private final Long id;
+        private final String userId;
+        private final String nickname;
+        private final String email;
+        private final String profileImageUrl;
+        private final String role;
+        private final LocalDateTime createdAt;
 
         // Entity에서 DTO 변환 생성자
         public Response(User user) {
