@@ -1,0 +1,5 @@
+server:
+  port: 8080
+jwt:
+  secret: HLThRa9Z0iGM8KJ59Ru7z8ViH3XrgqgvqhGm8rVcwOB
+  expiration: 86400000  # 24시간 (밀리초)

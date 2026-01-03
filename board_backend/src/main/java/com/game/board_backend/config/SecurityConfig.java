@@ -1,5 +1,7 @@
 package com.game.board_backend.config;
 
+import com.game.board_backend.security.JwtAuthenticationFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,10 +10,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     // BCrypt 암호화 방식 사용
     @Bean
@@ -34,7 +40,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // 인증 없이 접근 가능한 곳
                         .requestMatchers(
-                                "/api/auth/**"
+                                "/api/auth/**",
+                                "/api/boards",
+                                "/api/boards/{id}",
+                                "/api/boards/search",
+                                "/api/boards/{id}/comment"
                         ).permitAll()
                         // 그 외 모든 요청은 인증이 필요함
                         .anyRequest().authenticated()
@@ -42,7 +52,9 @@ public class SecurityConfig {
                 // 기본 로그인 폼 비활성화
                 .formLogin(form -> form.disable())
                 // HTTP Basic 인증 비 활성화
-                .httpBasic(basic -> basic.disable());
+                .httpBasic(basic -> basic.disable())
+                // 지정된 필터 앞에 커스텀 필터를 추가함
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -1,9 +1,11 @@
 package com.game.board_backend.service;
 
+import com.game.board_backend.dto.AuthResponse;
 import com.game.board_backend.dto.UserDto;
 import com.game.board_backend.model.User;
 import com.game.board_backend.model.UserRole;
 import com.game.board_backend.repository.UserRepository;
+import com.game.board_backend.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     // 회원가입
     @Transactional
@@ -48,7 +51,7 @@ public class UserService {
     }
 
     // 로그인
-    public UserDto.Response login(UserDto.Login dto) {
+    public AuthResponse login(UserDto.Login dto) {
         // 사용자 조회
         User user = userRepository.findByUserId(dto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("아이디 또는 비밀번호가 올바르지 않습니다."));
@@ -58,7 +61,10 @@ public class UserService {
             throw new IllegalArgumentException("아이디 또는 비밀번호가 올바르지 않습니다.");
         }
 
-        return new UserDto.Response(user);
+        // JWT 토큰 생성
+        String token = jwtTokenProvider.createToken(user.getId(), user.getUserId());
+
+        return new AuthResponse(token, new UserDto.Response(user));
     }
 
     // 유저 정보 조회
