@@ -53,7 +53,7 @@ public class UserController {
     /**
      * 내 프로필 조회
      * GET /api/auth/me
-     * Authorization : Bearer {token}
+     * Authorization: Bearer {token}
      */
     @GetMapping("/me")
     public ResponseEntity<UserDto.Response> getMyProfile(Authentication authentication) {
