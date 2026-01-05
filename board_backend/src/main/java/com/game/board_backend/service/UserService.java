@@ -46,7 +46,7 @@ public class UserService {
         user.setNickname(dto.getNickname());
         user.setRole(UserRole.USER);
 
-        User savedUser = userRepository.save(user);
+        User savedUser = userRepository.saveAndFlush(user);
         return new UserDto.Response(savedUser);
     }
 

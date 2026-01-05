@@ -52,7 +52,7 @@ public class BoardService {
                 image.setOrderIndex(i);
                 boardImageRepository.save(image);
             }
-            imageInfos = getImageInfos(savedBoard.getBoardId());
+            imageInfos = getImageInfos(savedBoard.getId());
         }
 
         return new BoardDto.Response(savedBoard, false, 0L, imageInfos);
@@ -85,8 +85,8 @@ public class BoardService {
         Page<Board> boards = boardRepository.findAllByOrderByCreatedAtDesc(pageable);
 
         return boards.map(board -> {
-            long commentCount = commentRepository.countByBoardId(board.getBoardId());
-            BoardImage thumbnail = boardImageRepository.findFirstByBoardIdOrderByOrderIndexAsc(board.getBoardId());
+            long commentCount = commentRepository.countByBoardId(board.getId());
+            BoardImage thumbnail = boardImageRepository.findFirstByBoardIdOrderByOrderIndexAsc(board.getId());
             String thumbnailUrl = thumbnail != null ? thumbnail.getImageUrl() : null;
 
             return new BoardDto.ListItem(board, commentCount, thumbnailUrl);
@@ -98,8 +98,8 @@ public class BoardService {
         Page<Board> boards = boardRepository.searchByTitleOrContent(keyword, pageable);
 
         return boards.map(board -> {
-            long commentCount = commentRepository.countByBoardId(board.getBoardId());
-            BoardImage thumbnail = boardImageRepository.findFirstByBoardIdOrderByOrderIndexAsc(board.getBoardId());
+            long commentCount = commentRepository.countByBoardId(board.getId());
+            BoardImage thumbnail = boardImageRepository.findFirstByBoardIdOrderByOrderIndexAsc(board.getId());
             String thumbnailUrl = thumbnail != null ? thumbnail.getImageUrl() : null;
 
             return new BoardDto.ListItem(board, commentCount, thumbnailUrl);

@@ -44,7 +44,8 @@ public class SecurityConfig {
                                 "/api/boards",
                                 "/api/boards/{id}",
                                 "/api/boards/search",
-                                "/api/boards/{id}/comment"
+                                "/api/boards/{id}/comments",
+                                "/h2-console/**"
                         ).permitAll()
                         // 그 외 모든 요청은 인증이 필요함
                         .anyRequest().authenticated()

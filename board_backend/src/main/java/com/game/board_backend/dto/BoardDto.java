@@ -41,7 +41,7 @@ public class BoardDto {
     // 게시글 상세 조회 응답
     @Getter
     public static class Response {
-        private final Long boardId;
+        private final Long id;
         private final String title;
         private final String content;
         private final String authorNickname;
@@ -60,7 +60,7 @@ public class BoardDto {
         private final LocalDateTime updatedAt;
 
         public Response(Board board, boolean isLiked, Long commentCount, List<ImageInfo> images) {
-            this.boardId = board.getBoardId();
+            this.id = board.getId();
             this.title = board.getTitle();
             this.content = board.getContent();
             this.authorNickname = board.getUser().getNickname();
@@ -78,7 +78,7 @@ public class BoardDto {
     // 게시글 목록 조회 응답
     @Getter
     public static class ListItem {
-        private final Long boardId;
+        private final Long id;
         private final String title;
         private final String authorNickname;
         private final Long viewCount;
@@ -91,7 +91,7 @@ public class BoardDto {
         private final LocalDateTime createdAt;
 
         public ListItem(Board board, Long commentCount, String thumbnailUrl) {
-            this.boardId = board.getBoardId();
+            this.id = board.getId();
             this.title = board.getTitle();
             this.authorNickname = board.getUser().getNickname();
             this.viewCount = board.getViewCount();

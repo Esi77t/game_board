@@ -75,7 +75,7 @@ public class UserDto {
             this.email = user.getEmail();
             this.profileImageUrl = user.getProfileImageUrl();
             this.role = user.getRole().name();
-            this.createdAt = getCreatedAt();
+            this.createdAt = user.getCreatedAt();
         }
     }
 }

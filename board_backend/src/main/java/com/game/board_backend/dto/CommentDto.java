@@ -33,7 +33,7 @@ public class CommentDto {
     // 댓글 조회 응답
     @Getter
     public static class Response {
-        private final Long commentId;
+        private final Long id;
         private final String content;
         private final String authorNickname;
         private final String authorProfileImageUrl;
@@ -42,7 +42,7 @@ public class CommentDto {
         private final LocalDateTime updatedAt;
 
         public Response(Comment comment, List<ImageInfo> images) {
-            this.commentId = comment.getCommentId();
+            this.id = comment.getId();
             this.content = comment.getContent();
             this.authorNickname = comment.getUser().getNickname();
             this.authorProfileImageUrl = comment.getUser().getProfileImageUrl();

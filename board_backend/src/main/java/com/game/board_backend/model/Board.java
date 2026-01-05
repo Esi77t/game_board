@@ -14,7 +14,7 @@ public class Board {
     // 게시판 고유 ID(PK)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long boardId;
+    private Long id;
 
     @Column(nullable = false, length = 200)
     private String title;
@@ -43,7 +43,7 @@ public class Board {
         updatedAt = LocalDateTime.now();
     }
 
-    @PrePersist
+    @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }

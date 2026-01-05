@@ -56,7 +56,7 @@ public class CommentService {
                 commentImageRepository.save(image);
             }
 
-            imageInfos = getImageInfos(savedComment.getCommentId());
+            imageInfos = getImageInfos(savedComment.getId());
         }
 
         return new CommentDto.Response(savedComment, imageInfos);
@@ -72,7 +72,7 @@ public class CommentService {
 
         return comments.stream()
                 .map(comment -> {
-                    List<CommentDto.ImageInfo> imageInfos = getImageInfos(comment.getCommentId());
+                    List<CommentDto.ImageInfo> imageInfos = getImageInfos(comment.getId());
                     return new CommentDto.Response(comment, imageInfos);
                 })
                 .collect(Collectors.toList());
@@ -138,7 +138,7 @@ public class CommentService {
 
         return comments.stream()
                 .map(comment -> {
-                    List<CommentDto.ImageInfo> imageInfos = getImageInfos(comment.getCommentId());
+                    List<CommentDto.ImageInfo> imageInfos = getImageInfos(comment.getId());
                     return new CommentDto.Response(comment, imageInfos);
                 })
                 .collect(Collectors.toList());

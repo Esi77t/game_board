@@ -40,7 +40,7 @@ public class BoardController {
      * GET /api/boards/{boardId}
      * 인증 X (로그인 안해도 조회 가능)
      */
-    @GetMapping
+    @GetMapping("/{boardId}")
     public ResponseEntity<BoardDto.Response> getBoard(
             @PathVariable Long boardId,
             Authentication authentication) {
@@ -66,7 +66,7 @@ public class BoardController {
      * 게시글 검색
      * GET /api/boards/search?keyword=검색어&page=0&size=10
      */
-    @GetMapping
+    @GetMapping("/search")
     public ResponseEntity<Page<BoardDto.ListItem>> searchBoard(
             @RequestParam String keyword,
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
