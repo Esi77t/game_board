@@ -30,6 +30,7 @@ public class BoardLike {
     // 유저 고유 ID(FK)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     // 게시판 좋아요 누른 날짜

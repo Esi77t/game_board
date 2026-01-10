@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final FileStorageService fileStorageService;
 
     // 회원가입
     @Transactional
@@ -76,6 +78,7 @@ public class UserService {
     }
 
     // 프로필 수정
+    @Transactional
     public UserDto.Response updateProfile(Long userId, UserDto.Update dto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
@@ -102,5 +105,75 @@ public class UserService {
         }
 
         return new UserDto.Response(user);
+    }
+
+    // 프로필 이미지 수정
+    @Transactional
+    public UserDto.ProfileImageResponse uploadProfileImage(Long userId, MultipartFile file) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
+        // 기존 프로필 이미지 삭제
+        if (user.getProfileImageUrl() != null) {
+            fileStorageService.deleteFile(user.getProfileImageUrl());
+        }
+
+        // 새 이미지 저장
+        String imageUrl = fileStorageService.storeFile(file, "profiles");
+        user.setProfileImageUrl(imageUrl);
+
+        return new UserDto.ProfileImageResponse(imageUrl);
+    }
+
+    // 프로필 이미지 삭제
+    @Transactional
+    public void deleteProfileImage(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
+        if (user.getProfileImageUrl() != null) {
+            fileStorageService.deleteFile(user.getProfileImageUrl());
+            user.setProfileImageUrl(null);
+        }
+    }
+
+    // 비밀번호 삭제
+    @Transactional
+    public void changePassword(Long userId, UserDto.PasswordChange dto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
+        // 현재 비밀번호 확인
+        if (!passwordEncoder.matches(dto.getCurrentPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("현재 비밀번호가 올바르지 않습니다.");
+        }
+
+        // 새 비밀번호와 현재 비밀번호가 같은지 확인
+        if (passwordEncoder.matches(dto.getNewPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("새 비밀번호는 현재 비밀번호와 달라야 합니다.");
+        }
+
+        // 비밀번호 변경
+        user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+    }
+
+    // 회원 탈퇴
+    @Transactional
+    public void deleteAccount(Long userId, String password) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
+        // 비밀번호 확인
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        // 프로필 이미지 삭제
+        if (user.getProfileImageUrl() != null) {
+            fileStorageService.deleteFile(user.getProfileImageUrl());
+        }
+
+        // 회원 삭제 (게시글과 댓글은 CASCADE로 자동 삭제)
+        userRepository.delete(user);
     }
 }

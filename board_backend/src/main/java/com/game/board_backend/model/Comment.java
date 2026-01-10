@@ -30,6 +30,7 @@ public class Comment {
     // 유저 고유 ID(FK)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     // 댓글 생성 날짜

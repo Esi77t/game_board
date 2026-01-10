@@ -78,4 +78,26 @@ public class UserDto {
             this.createdAt = user.getCreatedAt();
         }
     }
+
+    // 프로필 이미지 업로드 응답
+    @Getter
+    public static class ProfileImageResponse {
+        private final String imageUrl;
+
+        public ProfileImageResponse(String imageUrl) {
+            this.imageUrl= imageUrl;
+        }
+    }
+
+    // 비밀번호 변경 요청
+    @Getter
+    @Setter
+    public static class PasswordChange {
+        @NotBlank(message = "현재 비밀번호를 필수로 입력해야합니다.")
+        private String currentPassword;
+
+        @NotBlank(message = "새로운 비밀번호는 필수로 입력해야합니다.")
+        @Size(min = 8, max = 20, message = "비밀번호는 8 ~ 20자여야 합니다.")
+        private String newPassword;
+    }
 }
