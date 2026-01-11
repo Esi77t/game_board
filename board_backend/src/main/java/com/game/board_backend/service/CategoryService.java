@@ -51,6 +51,37 @@ public class CategoryService {
     }
 
     // 카테고리 수정
+    @Transactional
+    public CategoryDto.Response updateCategory(Long categoryId, CategoryDto.Update dto) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리입니다."));
+
+        if (!category.getName().equals(dto.getName())) {
+            if (categoryRepository.existsByName(dto.getName())) {
+                throw new IllegalArgumentException("이미 존재하는 카테고리입니다.");
+            }
+
+            category.setName(dto.getName());
+        }
+
+        if (dto.getDescription() != null) {
+            category.setDescription(dto.getDescription());
+        }
+
+        if (dto.getDisplayOrder() != null) {
+            category.setDisplayOrder(dto.getDisplayOrder());
+        }
+
+        return new CategoryDto.Response(category);
+    }
 
     // 카테고리 삭제
+    @Transactional
+    public void deleteCategory(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리입니다."));
+
+        // 카테고리 삭제 시 해당 카테고리의 게시글들은 category가 null로 설정됨
+        categoryRepository.delete(category);
+    }
 }

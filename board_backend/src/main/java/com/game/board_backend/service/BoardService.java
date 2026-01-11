@@ -1,10 +1,7 @@
 package com.game.board_backend.service;
 
 import com.game.board_backend.dto.BoardDto;
-import com.game.board_backend.model.Board;
-import com.game.board_backend.model.BoardImage;
-import com.game.board_backend.model.BoardLike;
-import com.game.board_backend.model.User;
+import com.game.board_backend.model.*;
 import com.game.board_backend.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,6 +22,7 @@ public class BoardService {
     private final CommentRepository commentRepository;
     private final BoardLikeRepository boardLikeRepository;
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
 
     // 게시글 작성
     public BoardDto.Response createBoard(BoardDto.Create dto, Long userId) {
@@ -38,6 +36,14 @@ public class BoardService {
         board.setUser(user);
         board.setViewCount(0L);
         board.setLikeCount(0L);
+
+        // 카테고리 설정
+        if (dto.getCategoryId() != null) {
+            Category category = categoryRepository.findById(dto.getCategoryId())
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리입니다."));
+
+            board.setCategory(category);
+        }
 
         Board savedBoard = boardRepository.save(board);
 
@@ -195,5 +201,20 @@ public class BoardService {
                         img.getOrderIndex()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    // 카테고리별 게시글 목록 조회
+    public Page<BoardDto.ListItem> getBoardsByCategory(Long categoryId, Pageable pageable) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리입니다."));
+
+        Page<Board> boards = boardRepository.findByCategoryInOrderByCreatedAtDesc(categoryId, pageable);
+
+        return boards.map(board -> {
+            long commentCount = commentRepository.countByBoardId(board.getId());
+            BoardImage thumbnail = boardImageRepository.findFirstByBoardIdOrderByOrderIndexAsc(board.getId());
+            String thumbnailUrl = thumbnail != null ? thumbnail.getImageUrl() : null;
+            return new BoardDto.ListItem(board, commentCount, thumbnailUrl);
+        });
     }
 }
