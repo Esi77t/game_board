@@ -33,6 +33,12 @@ public class Board {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
+    // 카테고리
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Category category;
+
     // 게시글 생성 날짜
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

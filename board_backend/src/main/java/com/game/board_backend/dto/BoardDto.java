@@ -21,6 +21,8 @@ public class BoardDto {
         @NotBlank
         private String content;
 
+        private Long categoryId;
+
         // 이미지 URL 목록 (프론트에서 이미 업로드 된 URL들)
         private List<String> imageUrls;
     }
@@ -59,6 +61,8 @@ public class BoardDto {
         private final LocalDateTime createdAt;
         private final LocalDateTime updatedAt;
 
+        private final String categoryName;
+
         public Response(Board board, boolean isLiked, Long commentCount, List<ImageInfo> images) {
             this.id = board.getId();
             this.title = board.getTitle();
@@ -72,6 +76,7 @@ public class BoardDto {
             this.images = images;
             this.createdAt = board.getCreatedAt();
             this.updatedAt = board.getUpdatedAt();
+            this.categoryName = board.getCategory() != null ? board.getCategory().getName() : null;
         }
     }
 
@@ -90,6 +95,8 @@ public class BoardDto {
 
         private final LocalDateTime createdAt;
 
+        private final String categoryName;
+
         public ListItem(Board board, Long commentCount, String thumbnailUrl) {
             this.id = board.getId();
             this.title = board.getTitle();
@@ -99,6 +106,7 @@ public class BoardDto {
             this.commentCount = commentCount;
             this.thumbnailUrl = thumbnailUrl;
             this.createdAt = board.getCreatedAt();
+            this.categoryName = board.getCategory() != null ? board.getCategory().getName() : null;
         }
     }
 
