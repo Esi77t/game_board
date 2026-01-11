@@ -36,4 +36,10 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     // 제목 + 내용 검색 (페이징)
     @Query("SELECT b FROM Board b WHERE b.title LIKE %:keyword% OR b.content LIKE %:keyword%")
     Page<Board> searchByTitleOrContent(@Param("keyword") String keyword, Pageable pageable);
+
+    // 카테고리 별 게시글 목록 (페이징)
+    Page<Board> findByCategoryInOrderByCreatedAtDesc(Long categoryId, Pageable pageable);
+
+    // 카테고리 별 게시글 개수
+    long countByCategoryId(Long categoryId);
 }

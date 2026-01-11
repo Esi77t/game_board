@@ -13,7 +13,7 @@ public class CategoryDto {
     // 카테고리 생성 요청
     @Getter
     @Setter
-    private static class Create {
+    public static class Create {
         @NotBlank(message = "카테고리 이름은 필수입니다.")
         @Size(max = 50, message = "카테고리 이름은 50자를 초과할 수 없습니다.")
         private String name;
@@ -27,7 +27,7 @@ public class CategoryDto {
     // 카테고리 수정 요청
     @Getter
     @Setter
-    private static class Update {
+    public static class Update {
         @NotBlank(message = "카테고리 이름은 필수입니다.")
         @Size(max = 50, message = "카테고리 이름은 50자를 초과할 수 없습니다.")
         private String name;
