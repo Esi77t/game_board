@@ -44,7 +44,10 @@ public class SecurityConfig {
                                 "/api/boards",
                                 "/api/boards/{id}",
                                 "/api/boards/search",
+                                "/api/boards/category/{categoryId}",
                                 "/api/boards/{id}/comments",
+                                "/api/categories",
+                                "/api/categories/{categoryId}",
                                 "/h2-console/**",
                                 "/images/**",
                                 "/profiles/**"

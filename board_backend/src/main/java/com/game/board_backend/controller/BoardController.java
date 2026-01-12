@@ -117,4 +117,17 @@ public class BoardController {
         boolean isLiked = boardService.toggleLike(boardId, userId);
         return ResponseEntity.ok(isLiked);
     }
+
+    /**
+     * 카테고리별 조회
+     * GET /api/boards/category/{categoryId}?page=0&size=10
+     */
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<Page<BoardDto.ListItem>> getBoardsByCategory(
+            @PathVariable Long categoryId,
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
+            Pageable pageable) {
+        Page<BoardDto.ListItem> response = boardService.getBoardsByCategory(categoryId, pageable);
+        return ResponseEntity.ok(response);
+    }
 }
