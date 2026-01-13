@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -76,5 +77,63 @@ public class UserController {
         UserDto.Response response = userService.updateProfile(userId, dto);
 
         return ResponseEntity.ok(response);
+    }
+
+    /**
+     * 프로필 이미지 업로드
+     * POST /api/auth/me/profile-image
+     */
+    @PostMapping("/me/profile-image")
+    public ResponseEntity<UserDto.ProfileImageResponse> uploadProfileImage(
+            @RequestParam("file") MultipartFile file,
+            Authentication authentication) {
+        Long userId = (Long) authentication.getPrincipal();
+
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("파일이 비어있습니다.");
+        }
+
+        UserDto.ProfileImageResponse response = userService.uploadProfileImage(userId, file);
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * 프로필 이미지 삭제
+     * DELETE /api/auth/me/profile-image
+     */
+    @DeleteMapping("/me/profile-image")
+    public ResponseEntity<Void> deleteProfileImage(Authentication authentication) {
+        Long userId = (Long) authentication.getPrincipal();
+
+        userService.deleteProfileImage(userId);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 비밀번호 수정
+     * PUT /api/auth/me/password
+     */
+    @PutMapping("/me/password")
+    public ResponseEntity<Void> updatePassword(
+            @Valid @RequestBody UserDto.PasswordChange dto,
+            Authentication authentication) {
+        Long userId = (Long) authentication.getPrincipal();
+
+        userService.changePassword(userId, dto);
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 회원 탈퇴
+     * DELETE /api/auth/me
+     */
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> deleteAccount(
+            @RequestParam String password,
+            Authentication authentication) {
+        Long userId = (Long) authentication.getPrincipal();
+        userService.deleteAccount(userId, password);
+        return ResponseEntity.noContent().build();
     }
 }
