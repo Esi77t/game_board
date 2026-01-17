@@ -1,3 +1,4 @@
+// 인증 관련 API
 import axios from "axios"
 
 // 회원가입

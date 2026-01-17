@@ -1,3 +1,4 @@
+// 기본 설정, 인터셉트 설정
 import axios from 'axios';
 
 // Axios 인스턴스 생성
