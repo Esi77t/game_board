@@ -17,19 +17,19 @@ export const login = async (credentials) => {
 export const getMyProfile = async () => {
     const response = await axios.get('/auth/me');
     return response.data;
-}
+};
 
 // 프로필 수정
 export const updateProfile = async (userData) => {
     const response = await axios.put('/auth/me', userData);
     return response.data;
-}
+};
 
 // 비밀번호 변경
 export const changePassword = async (passwordData) => {
     const response = await axios.put('/auth/me/password', passwordData);
     return response.data;
-}
+};
 
 // 프로필 이미지 업로드
 export const uploadProfileImage = async (file) => {
@@ -49,4 +49,4 @@ export const uploadProfileImage = async (file) => {
 export const deleteAccount = async (password) => {
     const response = await axios.delete(`/auth/me?password=${password}`);
     return response.data;
-}
+};
