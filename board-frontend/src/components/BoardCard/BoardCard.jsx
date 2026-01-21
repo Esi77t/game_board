@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { ko } from 'date-fns/locale';
 import { format } from 'date-fns';
 
-const BoardCard = () => {
+const BoardCard = ({ board }) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
