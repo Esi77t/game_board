@@ -1,6 +1,7 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Signup.css"
 import { useState } from "react";
+import { signup } from "../../api/auth";
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -42,13 +43,125 @@ const Signup = () => {
     };
 
     const handleSubmit = async (e) => {
+        e.preventDefalut();
 
-    }
+        const validationError = validate();
+        if (Object.keys(validationError).length > 0) {
+            setErrors(validationError);
+            return;
+        }
+
+        setLoading(true);
+        setErrors({});
+
+        try {
+            const { passwordConfirm, ...signupData } = formData;
+            await signup(signupData);
+
+            alert("회원가입이 완료되었습니다.");
+            navigate("/login");
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || "회원가입에 실패했습니다.";
+            setErrors({ submit: errorMessage });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+
+        // 에러 메시지 제거
+        if (errors[name]) {
+            setErrors(prev => ({
+                ...prev,
+                [name]: ''
+            }));
+        }
+    };
 
     return (
         <div className="signup-container">
             <div className="signup-box">
                 <h2>회원가입</h2>
+                {errors.submit && <div className="error-message">{errors.submit}</div>}
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="userId">아이디</label>
+                        <input
+                            type="text"
+                            id="userId"
+                            name="userId"
+                            value={formData.userId}
+                            onChange={handleChange}
+                            required
+                            placeholder="4~20자 이내로 입력해주세요."
+                        />
+                        {errors.userId && <span className="field-error">{errors.userId}</span>}
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="password">비밀번호</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                            placeholder="8~20자 이내로 입력해주세요."
+                        />
+                        {errors.password && <span className="field-error">{errors.password}</span>}
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="passwordConfirm">비밀번호 확인</label>
+                        <input
+                            type="password"
+                            id="passwordConfirm"
+                            name="passwordConfirm"
+                            value={formData.passwordConfirm}
+                            onChange={handleChange}
+                            required
+                            placeholder="비밀번호를 다시 입력해주세요."
+                        />
+                        {errors.passwordConfirm && <span className="field-error">{errors.passwordConfirm}</span>}
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="nickname">닉네임</label>
+                        <input
+                            type="text"
+                            id="nickname"
+                            name="nickname"
+                            value={formData.nickname}
+                            onChange={handleChange}
+                            required
+                            placeholder="2~20자 이내로 입력해주세요."
+                        />
+                        {errors.nickname && <span className="field-error">{errors.nickname}</span>}
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="email">아이디</label>
+                        <input
+                            type="text"
+                            id="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                            placeholder="example@email.com"
+                        />
+                        {errors.email && <span className="field-error">{errors.email}</span>}
+                    </div>
+                    <button type="submit" className="submit-button" disabled={loading}>
+                        {loading ? '회원가입 중...' : '회원가입'}
+                    </button>
+                </form>
+                <div className="signup-footer">
+                    <p>이미 계정이 있으신가요? <Link to="/login">로그인</Link></p>
+                </div>
             </div>
         </div>
     )

@@ -1,0 +1,95 @@
+.board-card {
+    display: flex;
+    gap: 1rem;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.board-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.board-thumbnail {
+    flex-shrink: 0;
+    width: 120px;
+    height: 120px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.board-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.board-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.board-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.board-category {
+    color: var(--primary-color);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.board-title {
+    margin: 0;
+    font-size: 1.125rem;
+    color: var(--text-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.board-info {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.board-stats {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: #999;
+    margin-top: auto;
+}
+
+.board-stats span {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.board-stats .icon {
+    width: 18px;
+    height: 18px;
+    opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+    .board-card {
+        flex-direction: column;
+    }
+
+    .board-thumbnail {
+        width: 100%;
+        height: 200px;
+    }
+}
