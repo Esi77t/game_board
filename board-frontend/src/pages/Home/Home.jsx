@@ -97,16 +97,16 @@ const Home = () => {
             <div className="home-header">
                 <h2>게시판</h2>
                 <form onSubmit={handleSearch} className="search-form">
-                    <input
-                        type="text"
-                        placeholder="게시글 검색"
-                        value={searchKeyword}
-                        onChange={(e) => setSearchKeyword(e.target.value)}
-                        className="search-input"
-                    />
-                    <button type="submit" className="search-button">
-                        <img src={Search_Outline} alt="검색" className="icons" />
-                    </button>
+                    <div className="search-wrapper">
+                        <img src={Search_Outline} alt="검색" className="search-icon" />
+                        <input
+                            type="text"
+                            placeholder="게시글 검색"
+                            value={searchKeyword}
+                            onChange={(e) => setSearchKeyword(e.target.value)}
+                            className="search-input"
+                        />
+                    </div>
                 </form>
                 {/* 카테고리 필터 */}
                 {categories && categories.length > 0 && (
