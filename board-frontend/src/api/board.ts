@@ -1,8 +1,9 @@
 // 게시판 API
 import axios from "axios"
+import { BoardListItem, PageResponse } from "../types";
 
 // 게시물 목록 조회
-export const getBoardList = async (page = 0, size = 10) => {
+export const getBoardList = async (page: number = 0, size: number = 10): Promise<PageResponse<BoardListItem>> => {
     const response = await axios.get(`/boards?page=${page}&size=${size}`);
     return response.data;
 };

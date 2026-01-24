@@ -1,5 +1,5 @@
 // 기본 설정, 인터셉트 설정
-import axios from 'axios';
+import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 // Axios 인스턴스 생성
 const instance = axios.create({
@@ -12,14 +12,14 @@ const instance = axios.create({
 
 // 요청 인터셉터(예외 처리)
 instance.interceptors.request.use(
-    (config) => {
+    (config: InternalAxiosRequestConfig) => {
         const token = localStorage.getItem('token');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
     },
-    (error) => {
+    (error: AxiosError) => {
         return Promise.reject(error);
     }
 );
@@ -29,7 +29,7 @@ instance.interceptors.response.use(
     (response) => {
         return response;
     },
-    (error) => {
+    (error: AxiosError) => {
         // 401 에러(인증 실패) 처리
         if (error.response?.status === 401) {
             localStorage.removeItem('token');
