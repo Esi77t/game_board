@@ -1,18 +1,19 @@
-import { useState } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../api/auth";
 import "./Login.css";
+import { LoginRequest } from '../../types';
 
 const Login = () => {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<LoginRequest>({
         userId: '',
         password: ''
     });
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
 
-    const handleChange = (e) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({
             ...prev,
@@ -20,7 +21,7 @@ const Login = () => {
         }));
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError('');
         setLoading(true);
@@ -35,7 +36,7 @@ const Login = () => {
             // 홈으로 이동
             navigate('/');
             window.location.reload();   // Header 업데이트 용으로
-        } catch (error) {
+        } catch (error: any) {
             setError(error.response?.data?.message || '로그인에 실패했습니다.');
         } finally {
             setLoading(true);
