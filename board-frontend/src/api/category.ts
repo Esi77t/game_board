@@ -1,26 +1,35 @@
 // 카테고리 API
 import axios from "axios"
+import { Category } from "../types";
 
 // 카테고리 목록 조회
-export const getCategories = async () => {
+export const getCategories = async (): Promise<Category[]> => {
     const response = await axios.get('/categories');
     return response.data;
 };
 
 // 카테고리 생성(관리자만)
-export const createCategory = async (categoryData) => {
+export const createCategory = async (categoryData: {
+    name: string;
+    description?: string;
+    displayOrder?: number;
+}): Promise<Category> => {
     const response = await axios.post('/categories', categoryData);
     return response.data;
 };
 
 // 카테고리 수정(관리자만)
-export const updateCategory = async (categoryId, categoryData) => {
-    const response = await axios.put(`/categories/${categoryId}`, categoryData);
+export const updateCategory = async (categoryId: number, categoryData: {
+    name: string;
+    description?: string;
+    displayOrder?: number;
+}): Promise<Category> => {
+    const response = await axios.put<Category>(`/categories/${categoryId}`, categoryData);
     return response.data;
 };
 
 // 카테고리 삭제(관리자만)
-export const deleteCateogry = async (categoryId) => {
+export const deleteCateogry = async (categoryId: number): Promise<void> => {
     const response = await axios.delete(`/categories/${categoryId}`);
     return response.data;
 };

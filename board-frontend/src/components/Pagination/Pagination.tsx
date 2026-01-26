@@ -1,6 +1,12 @@
 import "./Pagination.css";
 
-const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+interface PaginationProps {
+    currentPage: number;
+    totalPages: number;
+    onPageChange: (page: number) => void;
+}
+
+const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) => {
     const getPageNumbers = () => {
         const pages = [];
         const maxVisible = 5;
@@ -32,7 +38,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
                 <button
                     key={page}
                     className={`pagination-button ${currentPage === page ? 'active' : ''}`}
-                    onClick={onPageChange(page)}
+                    onClick={() => onPageChange(page)}
                 >
                     {page + 1}
                 </button>

@@ -4,13 +4,13 @@ import { AuthResponse, LoginRequest, SignUpRequest, UploadResponse, User } from 
 
 // 회원가입
 export const signup = async (userData: SignUpRequest): Promise<User> => {
-    const response = await axios.post('/auth/signup', userData);
+    const response = await axios.post<User>('/auth/signup', userData);
     return response.data;
 };
 
 // 로그인
 export const login = async (credentials: LoginRequest): Promise<AuthResponse> => {
-    const response = await axios.post('/auth/login', credentials);
+    const response = await axios.post<AuthResponse>('/auth/login', credentials);
     return response.data;
 };
 
@@ -22,7 +22,7 @@ export const getMyProfile = async (): Promise<User> => {
 
 // 프로필 수정
 export const updateProfile = async (userData: Partial<User>): Promise<User> => {
-    const response = await axios.put('/auth/me', userData);
+    const response = await axios.put<User>('/auth/me', userData);
     return response.data;
 };
 
@@ -40,7 +40,7 @@ export const uploadProfileImage = async (file: File): Promise<UploadResponse> =>
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await axios.post('/auth/me/profile-image', formData, {
+    const response = await axios.post<UploadResponse>('/auth/me/profile-image', formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
         },

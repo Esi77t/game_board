@@ -5,15 +5,20 @@ import Favorite_Outline from '../../assets/icons/Favorite_Outline.svg';
 import { useNavigate } from 'react-router-dom';
 import { ko } from 'date-fns/locale';
 import { format } from 'date-fns';
+import { BoardListItem } from '../../types';
 
-const BoardCard = ({ board }) => {
+interface BoardCardProps {
+    board: BoardListItem;
+}
+
+const BoardCard = ({ board }: BoardCardProps ) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
         navigate(`/boards/${board.id}`);
     };
 
-    const formatDate = (dateString) => {
+    const formatDate = (dateString: string): string => {
         try {
             return format(new Date(dateString), 'yyyy-MM.dd HH:mm', { locale: ko });
         } catch (error) {
