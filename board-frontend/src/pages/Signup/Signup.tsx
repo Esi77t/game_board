@@ -1,22 +1,31 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./Signup.css"
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { signup } from "../../api/auth";
+import { SignUpRequest } from "../../types";
+
+interface FormData extends SignUpRequest {
+    passwordConfirm: string;
+}
+
+interface FormErrors {
+    [key: string]: string;
+}
 
 const Signup = () => {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<FormData>({
         userId: '',
         password: '',
         passwordConfirm: '',
         nickname: '',
         email: ''
     });
-    const [errors, setErrors] = useState({});
-    const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState<FormErrors>({});
+    const [loading, setLoading] = useState<boolean>(false);
 
     const validate = () => {
-        const newErrors = {};
+        const newErrors: FormErrors = {};
 
         if (formData.userId.length < 4 || formData.userId.length > 20) {
             newErrors.userId = '아이디는 4-20자여야 합니다.';
@@ -42,8 +51,8 @@ const Signup = () => {
         return newErrors;
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefalut();
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
 
         const validationError = validate();
         if (Object.keys(validationError).length > 0) {
@@ -60,7 +69,7 @@ const Signup = () => {
 
             alert("회원가입이 완료되었습니다.");
             navigate("/login");
-        } catch (error) {
+        } catch (error: any) {
             const errorMessage = error.response?.data?.message || "회원가입에 실패했습니다.";
             setErrors({ submit: errorMessage });
         } finally {
@@ -68,7 +77,7 @@ const Signup = () => {
         }
     };
 
-    const handleChange = (e) => {
+    const handleChange = (e :ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({
             ...prev,

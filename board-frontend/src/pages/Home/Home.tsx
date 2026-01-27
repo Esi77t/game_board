@@ -1,23 +1,24 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Home.css";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getCategories } from "../../api/category";
 import { getBoardList, getBoardsByCategory, searchBoards } from "../../api/board";
 import Search_Outline from "../../assets/icons/Search_Outline.svg";
 import BoardCard from "../../components/BoardCard/BoardCard";
 import Pagination from "../../components/Pagination/Pagination";
+import { BoardListItem, Category, PageResponse } from "../../types";
 
 const Home = () => {
     const navigate = useNavigate();
-    const [searchParams, setSearchParmas] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    const [boards, setBoards] = useState([]);
-    const [categories, setCategories] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState(null);
-    const [searchKeyword, setSearchKeyword] = useState('');
-    const [currentPage, setCurrentPage] = useState(0);
-    const [totalPages, setTotalPages] = useState(0);
-    const [loading, setLoading] = useState(false);
+    const [boards, setBoards] = useState<BoardListItem[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const [searchKeyword, setSearchKeyword] = useState<string>('');
+    const [currentPage, setCurrentPage] = useState<number>(0);
+    const [totalPages, setTotalPages] = useState<number>(0);
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
         fetchCategories();
@@ -38,23 +39,23 @@ const Home = () => {
     const fetchCategories = async () => {
         try {
             const data = await getCategories();
-            setCategories();
+            setCategories(data);
         } catch (error) {
             console.error("카테고리를 불러오는 데 실패했습니다: ", error);
         }
     }
 
-    const fetchBoard = async (page, keyword, categoryId) => {
+    const fetchBoard = async (page: number, keyword: string, categoryId: string | null) => {
         setLoading(true);
         try {
-            let data;
+            let data: PageResponse<BoardListItem>;
 
             if (keyword) {
                 // 검색
                 data = await searchBoards(keyword, page, 10);
             } else if (categoryId) {
                 // 카테고리별 조회
-                data = await getBoardsByCategory(categoryId, page, 10);
+                data = await getBoardsByCategory(parseInt(categoryId), page, 10);
             } else {
                 // 전체 조회
                 data = await getBoardList(page, 10);
@@ -69,27 +70,27 @@ const Home = () => {
         }
     };
 
-    const handleSearch = (e) => {
+    const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (searchKeyword.trim()) {
-            setSearchParmas({ keyword: searchKeyword, page: 0 });
+            setSearchParams({ keyword: searchKeyword, page: '0' });
         }
     };
 
-    const handleCategoryClick = (categoryId) => {
+    const handleCategoryClick = (categoryId: number | null) => {
         if (categoryId) {
-            setSearchParmas({ category: categoryId, page: '0' });
+            setSearchParams({ category: categoryId.toString(), page: '0' });
         } else {
-            setSearchParmas({ page: '0' });
+            setSearchParams({ page: '0' });
         }
     };
 
-    const handlePageChange = (page) => {
-        const params = {};
+    const handlePageChange = (page: number) => {
+        const params: Record<string, string> = {};
         if (searchKeyword) params.keyword = searchKeyword;
         if (selectedCategory) params.category = selectedCategory;
         params.page = page.toString();
-        setSearchKeyword(params);
+        setSearchParams(params);
     }
 
     return (

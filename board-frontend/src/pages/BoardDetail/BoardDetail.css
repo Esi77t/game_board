@@ -1,0 +1,247 @@
+.board-detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.board-detail {
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.board-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--secondary-color);
+}
+
+.board-category {
+    color: var(--primary-color);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.board-title {
+    margin: 0.5rem 0 0;
+    font-size: 1.75rem;
+    color: var(--text-color);
+}
+
+.board-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--secondary-color);
+}
+
+.author-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.author-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.author-avatar-default {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.author-name {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.board-date {
+    font-size: 0.875rem;
+    color: #999;
+}
+
+.board-stats {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.board-content {
+    margin: 2rem 0;
+    line-height: 1.8;
+    font-size: 1rem;
+    color: var(--text-color);
+    white-space: pre-wrap;
+}
+
+.board-images {
+    display: grid;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.board-images img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.board-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem 0;
+    padding: 1rem 0;
+    border-top: 1px solid var(--secondary-color);
+    border-bottom: 1px solid var(--secondary-color);
+}
+
+.like-button {
+    padding: 0.75rem 1.5rem;
+    background-color: white;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.like-button:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.like-button.liked {
+    background-color: #ffe5e5;
+    border-color: #ff6b6b;
+    color: #ff6b6b;
+}
+
+.author-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.edit-button,
+.delete-button {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.edit-button {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.edit-button:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.delete-button {
+    background-color: white;
+    border: 1px solid #ff6b6b;
+    color: #ff6b6b;
+}
+
+.delete-button:hover {
+    background-color: #ff6b6b;
+    color: white;
+}
+
+.comment-section {
+    margin-top: 3rem;
+}
+
+.comment-section h3 {
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+}
+
+.comment-form {
+    margin-bottom: 2rem;
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    resize: vertical;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.comment-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.comment-submit {
+    margin-top: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.comment-submit:hover {
+    background-color: #357abd;
+}
+
+.login-required {
+    padding: 2rem;
+    text-align: center;
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+    color: #666;
+}
+
+.login-required a {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.back-button {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 2rem;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.back-button:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.loading,
+.error {
+    text-align: center;
+    padding: 3rem;
+    color: #999;
+}
