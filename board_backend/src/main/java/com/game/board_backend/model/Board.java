@@ -35,8 +35,8 @@ public class Board {
 
     // 카테고리
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "category_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Category category;
 
     // 게시글 생성 날짜

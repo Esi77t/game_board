@@ -38,7 +38,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     Page<Board> searchByTitleOrContent(@Param("keyword") String keyword, Pageable pageable);
 
     // 카테고리 별 게시글 목록 (페이징)
-    Page<Board> findByCategoryInOrderByCreatedAtDesc(Long categoryId, Pageable pageable);
+    Page<Board> findByCategoryIdOrderByCreatedAtDesc(Long categoryId, Pageable pageable);
 
     // 카테고리 별 게시글 개수
     long countByCategoryId(Long categoryId);

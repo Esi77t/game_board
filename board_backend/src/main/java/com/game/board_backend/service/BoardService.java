@@ -208,7 +208,7 @@ public class BoardService {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리입니다."));
 
-        Page<Board> boards = boardRepository.findByCategoryInOrderByCreatedAtDesc(categoryId, pageable);
+        Page<Board> boards = boardRepository.findByCategoryIdOrderByCreatedAtDesc(categoryId, pageable);
 
         return boards.map(board -> {
             long commentCount = commentRepository.countByBoardId(board.getId());

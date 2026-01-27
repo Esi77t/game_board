@@ -214,7 +214,7 @@ const BoardDetail = () => {
                     {isAuthor && (
                         <div className="author-actions">
                             <button className="edit-button" onClick={handleEdit}>수정</button>
-                            <button className="delete-button" onClick={handleDelete}>수정</button>
+                            <button className="delete-button" onClick={handleDelete}>삭제</button>
                         </div>
                     )}
                 </div>
