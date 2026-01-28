@@ -16,7 +16,7 @@ export const createComment = async (boardId: number, commetData: CommentCreateRe
 
 // 댓글 수정
 export const updateComment = async (boardId: number, commentId: number, commentData: CommentUpdateRequest): Promise<Comment> => {
-    const response = await axios.put<Comment>(`/boards/${boardId}/commnets/${commentId}`, commentData);
+    const response = await axios.put<Comment>(`/boards/${boardId}/comments/${commentId}`, commentData);
     return response.data;
 };
 

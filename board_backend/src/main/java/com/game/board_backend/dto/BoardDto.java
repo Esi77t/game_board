@@ -46,6 +46,7 @@ public class BoardDto {
         private final Long id;
         private final String title;
         private final String content;
+        private final Long authorId;
         private final String authorNickname;
         private final String authorProfileImageUrl;
         private final Long viewCount;
@@ -67,6 +68,7 @@ public class BoardDto {
             this.id = board.getId();
             this.title = board.getTitle();
             this.content = board.getContent();
+            this.authorId = board.getUser().getId();
             this.authorNickname = board.getUser().getNickname();
             this.authorProfileImageUrl = board.getUser().getProfileImageUrl();
             this.viewCount = board.getViewCount();

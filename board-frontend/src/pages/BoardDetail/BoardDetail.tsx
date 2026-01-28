@@ -9,6 +9,7 @@ import Favorite_Outline from "../../assets/icons/Favorite_Outline.svg";
 import Favorite_Fill from "../../assets/icons/Favorite_Fill.svg";
 import { Board, Comment, User } from "../../types";
 import CommentList from "../../components/CommentList/CommentList";
+import { getImageUrl } from "../../config/imageUrl";
 
 const BoardDetail = () => {
     const { id } = useParams<{ id: string }>();
@@ -58,7 +59,7 @@ const BoardDetail = () => {
         }
     }
 
-    const isAuthor = currentUser && currentUser.id === (board as any).authorId;
+    const isAuthor = currentUser && board && currentUser.id === board.authorId;
 
     const handleEdit = () => {
         navigate(`/boards/edit/${id}`);
@@ -170,7 +171,7 @@ const BoardDetail = () => {
                     <div className="author-info">
                         {board.authorProfileImageUrl ? (
                             <img
-                                src={`http:/localhost:8080${board.authorProfileImageUrl}`}
+                                src={getImageUrl(board.authorProfileImageUrl) || ''}
                                 alt="프로필"
                                 className="author-avatar"
                             />
@@ -200,7 +201,7 @@ const BoardDetail = () => {
                         {board.images.map(image => (
                             <img 
                                 key={image.id}
-                                src={`http://localhost:8080${image.imageUrl}`}
+                                src={getImageUrl(image.imageUrl) || ''}
                                 alt={image.originalFileName || '이미지'}
                             />
                         ))}

@@ -40,7 +40,7 @@ export const searchBoards = async (keyword: string, page: number = 0, size: numb
 
 // 카테고리 별 게시글 조회
 export const getBoardsByCategory = async (categoryId: number, page: number = 0, size: number = 10): Promise<PageResponse<BoardListItem>> => {
-    const response = await axios.get<PageResponse<BoardListItem>>(`/boards/category/${categoryId}?page=${page}$size=${size}`);
+    const response = await axios.get<PageResponse<BoardListItem>>(`/boards/category/${categoryId}?page=${page}&size=${size}`);
     return response.data;
 };
 

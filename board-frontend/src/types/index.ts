@@ -27,6 +27,7 @@ export interface Board {
     id: number;
     title: string;
     content: string;
+    authorId: number;
     authorNickname: string;
     authorProfileImageUrl: string | null;
     viewCount: number;

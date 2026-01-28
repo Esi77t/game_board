@@ -3,6 +3,7 @@ import { Comment, User } from "../../types";
 import "./CommentList.css";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
+import { getImageUrl } from "../../config/imageUrl";
 
 interface CommentListProps {
     comments: Comment[];
@@ -55,7 +56,7 @@ const CommentList = ({ comments, currentUser, onUpdate, onDelete }: CommentListP
                         <div className="comment-author">
                             {comment.authorProfileImageUrl ? (
                                 <img 
-                                    src={`http://localhost:8080${comment.authorProfileImageUrl}`}
+                                    src={getImageUrl(comment.authorProfileImageUrl) || ''}
                                     alt="프로필"
                                     className="comment-avatar"
                                 />
@@ -99,7 +100,7 @@ const CommentList = ({ comments, currentUser, onUpdate, onDelete }: CommentListP
                                 {comment.images.map(image => (
                                     <img
                                         key={image.id}
-                                        src={`http://localhost:8080${image.imageUrl}`}
+                                        src={getImageUrl(image.imageUrl) || ''}
                                         alt={image.originalFileName || '이미지'}
                                     />
                                 ))}

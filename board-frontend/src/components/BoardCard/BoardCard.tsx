@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { ko } from 'date-fns/locale';
 import { format } from 'date-fns';
 import { BoardListItem } from '../../types';
+import { getImageUrl } from '../../config/imageUrl';
 
 interface BoardCardProps {
     board: BoardListItem;
@@ -30,7 +31,7 @@ const BoardCard = ({ board }: BoardCardProps ) => {
         <div className="board-card" onClick={handleClick}>
             {board.thumbnailUrl && (
                 <div className="board-thumbnail">
-                    <img src={`http://localhost:8080${board.thumbnailUrl}`} alt="thumbnail" />
+                    <img src={getImageUrl(board.thumbnailUrl) || ''} alt="thumbnail" />
                 </div>
             )}
             <div className="board-content">
