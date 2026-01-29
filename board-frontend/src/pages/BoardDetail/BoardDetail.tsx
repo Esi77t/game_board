@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import "./BoardDetail.css";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { deleteBoard, getBoardDetail } from "../../api/board";
+import { deleteBoard, getBoardDetail, toggleLike } from "../../api/board";
 import { createComment, deleteComment, getComments, updateComment } from "../../api/comment";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
@@ -99,7 +99,7 @@ const BoardDetail = () => {
             return;
         }
 
-        if(!commentContent.trim()) {
+        if (!commentContent.trim()) {
             alert('댓글 내용을 입력하세요.');
             return;
         }
@@ -111,7 +111,7 @@ const BoardDetail = () => {
             setBoard(prev => prev ? ({
                 ...prev,
                 commentCount: prev.commentCount + 1
-            }): null);
+            }) : null);
         } catch (error) {
             console.error('댓글 작성 실패: ', error);
             alert('댓글 작성에 실패했습니다.');
@@ -146,15 +146,42 @@ const BoardDetail = () => {
             console.error('댓글 삭제 실패: ', error);
             alert('댓글 삭제에 실패했습니다.');
         }
-    }
+    };
+
+    const handleLikeToggle = async () => {
+        if (!id) return;
+
+        if (!currentUser) {
+            alert('로그인이 필요한 기능입니다.');
+            navigate('/login');
+            return;
+        }
+
+        try {
+            const isNowLiked = await toggleLike(parseInt(id));
+
+            setIsLiked(isNowLiked);
+
+            setBoard(prev => {
+                if (!prev) return null;
+                return {
+                    ...prev,
+                    likeCount: isNowLiked ? prev.likeCount + 1 : prev.likeCount - 1
+                }
+            });
+        } catch (error) {
+            console.error('좋아요 처리 실패: ', error);
+            alert('좋아요 처리에 실패했습니다.');
+        }
+    };
 
     if (loading) {
         return <div className="loading">불러오는 중</div>;
-    }
+    };
 
     if (!board) {
         return <div className="error">게시글을 찾을 수 없습니다.</div>;
-    }
+    };
 
     return (
         <div className="board-detail-container">
@@ -178,7 +205,7 @@ const BoardDetail = () => {
                         ) : (
                             <div className="author-avatar-default">
                                 {board.authorNickname.charAt(0)}
-                            </div> 
+                            </div>
                         )}
                         <div>
                             <div className="author-name">{board.authorNickname}</div>
@@ -199,7 +226,7 @@ const BoardDetail = () => {
                 {board.images && board.images.length > 0 && (
                     <div className="board-images">
                         {board.images.map(image => (
-                            <img 
+                            <img
                                 key={image.id}
                                 src={getImageUrl(image.imageUrl) || ''}
                                 alt={image.originalFileName || '이미지'}
@@ -209,8 +236,16 @@ const BoardDetail = () => {
                 )}
                 {/* 액션 버튼 */}
                 <div className="board-actions">
-                    <button className={`like-button ${isLiked ? 'liked' : ''}`}>
-                        {isLiked ? Favorite_Fill : Favorite_Outline} ({board.likeCount})
+                    <button 
+                        className={`like-button ${isLiked ? 'liked' : ''}`}
+                        onClick={handleLikeToggle}
+                    >
+                        <img
+                            src={isLiked ? Favorite_Fill : Favorite_Outline}
+                            alt="좋아요"
+                            className="like-icon"
+                        />
+                        <span>좋아요 {board.likeCount}</span>
                     </button>
                     {isAuthor && (
                         <div className="author-actions">
@@ -224,7 +259,7 @@ const BoardDetail = () => {
                     <h3>댓글 {board.commentCount}</h3>
                     {currentUser ? (
                         <form onSubmit={handleCommentSubmit} className="comment-form">
-                            <textarea 
+                            <textarea
                                 value={commentContent}
                                 onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setCommentContent(e.target.value)}
                                 placeholder="댓글을 입력하세요"
