@@ -39,9 +39,16 @@ const Home = () => {
     const fetchCategories = async () => {
         try {
             const data = await getCategories();
-            setCategories(data);
+
+            if (Array.isArray(data)) {
+                setCategories(data);
+            } else {
+                console.error('카테고리 응답이 배열이 아닙니다.', data);
+                setCategories([]);
+            }
         } catch (error) {
             console.error("카테고리를 불러오는 데 실패했습니다: ", error);
+            setCategories([]);
         }
     }
 

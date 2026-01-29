@@ -1,28 +1,28 @@
 // 인증 관련 API
-import axios from "axios"
 import { AuthResponse, LoginRequest, SignUpRequest, UploadResponse, User } from "../types";
+import instance from "./axios";
 
 // 회원가입
 export const signup = async (userData: SignUpRequest): Promise<User> => {
-    const response = await axios.post<User>('/auth/signup', userData);
+    const response = await instance.post<User>('/auth/signup', userData);
     return response.data;
 };
 
 // 로그인
 export const login = async (credentials: LoginRequest): Promise<AuthResponse> => {
-    const response = await axios.post<AuthResponse>('/auth/login', credentials);
+    const response = await instance.post<AuthResponse>('/auth/login', credentials);
     return response.data;
 };
 
 // 내 정보 조회
 export const getMyProfile = async (): Promise<User> => {
-    const response = await axios.get('/auth/me');
+    const response = await instance.get('/auth/me');
     return response.data;
 };
 
 // 프로필 수정
 export const updateProfile = async (userData: Partial<User>): Promise<User> => {
-    const response = await axios.put<User>('/auth/me', userData);
+    const response = await instance.put<User>('/auth/me', userData);
     return response.data;
 };
 
@@ -31,7 +31,7 @@ export const changePassword = async (passwordData: {
     currentPassword: string;
     newPassword: string;
 }): Promise<void> => {
-    const response = await axios.put('/auth/me/password', passwordData);
+    const response = await instance.put('/auth/me/password', passwordData);
     return response.data;
 };
 
@@ -40,7 +40,7 @@ export const uploadProfileImage = async (file: File): Promise<UploadResponse> =>
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await axios.post<UploadResponse>('/auth/me/profile-image', formData, {
+    const response = await instance.post<UploadResponse>('/auth/me/profile-image', formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
         },
@@ -51,6 +51,6 @@ export const uploadProfileImage = async (file: File): Promise<UploadResponse> =>
 
 // 회원탈퇴
 export const deleteAccount = async (password: string): Promise<void> => {
-    const response = await axios.delete(`/auth/me?password=${password}`);
+    const response = await instance.delete(`/auth/me?password=${password}`);
     return response.data;
 };

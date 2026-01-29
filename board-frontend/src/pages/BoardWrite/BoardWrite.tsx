@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "./BoardWrite.css";
-import { FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { BoardCreateRequest, Category } from "../../types";
 import { getCategories } from "../../api/category";
 import { uploadImages } from "../../api/upload";
@@ -44,7 +44,7 @@ const BoardWrite = () => {
         } catch (error) {
             console.error('카테고리 조회 실패: ', error);
         }
-    }
+    };
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -85,16 +85,49 @@ const BoardWrite = () => {
         } finally {
             setLoading(false);
         }
-    }
+    };
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
 
     return (
         <div className="board-write-conatainer">
             <div className="board-write">
                 <h2>게시글 작성</h2>
                 <form onSubmit={handleSubmit}>
+                    {categories.length > 0 && (
+                        <div className="form-group">
+                            <label htmlFor="categoryId">카테고리</label>
+                            <select
+                                id="categoryId"
+                                name="categoryId"
+                                value={formData.categoryId}
+                                onChange={handleChange}
+                            >
+                                <option value="">카테고리 선택</option>
+                                {categories.map(category => (
+                                    <option
+                                        key={category.id} value={category.id}
+                                    >
+                                        {category.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
+                    <div className="form-group">
+                        <label htmlFor="title">제목</label>
 
+                    </div>
                 </form>
             </div>
         </div>
     );
 }
+
+export default BoardWrite;

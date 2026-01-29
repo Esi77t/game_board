@@ -1,13 +1,13 @@
 // 업로드 API
-import axios from "axios"
 import { UploadResponse } from "../types";
+import instance from "./axios";
 
 // 이미지 업로드(단일)
 export const uploadImage = async (file: File): Promise<UploadResponse> => {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await axios.post<UploadResponse>('/upload/image', formData, {
+    const response = await instance.post<UploadResponse>('/upload/image', formData, {
         headers: {
             "Content-Type": 'multipart/form-data',
         },
@@ -23,7 +23,7 @@ export const uploadImages = async (files: File[]): Promise<UploadResponse[]> => 
         formData.append('file', file);
     });
 
-    const response = await axios.post<UploadResponse[]>('/upload/images', formData, {
+    const response = await instance.post<UploadResponse[]>('/upload/images', formData, {
         headers: {
             "Content-Type": 'multipart/form-data',
         }
