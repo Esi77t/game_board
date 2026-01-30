@@ -6,6 +6,7 @@ import Signup from './pages/Signup/Signup'
 import Login from './components/Login/Login'
 import BoardWrite from './pages/BoardWrite/BoardWrite'
 import BoardDetail from './pages/BoardDetail/BoardDetail'
+import BoardEdit from './pages/BoardEdit/BoardEdit'
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                     <Route path='/signup' element={<Signup />} />
                     <Route path="/boards/write" element={<BoardWrite />} />
                     <Route path="/boards/:id" element={<BoardDetail />}/>
+                    <Route path="/boards/write/:id" element={<BoardEdit />}/>
                 </Routes>
             </main>
         </div>
