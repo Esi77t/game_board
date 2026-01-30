@@ -40,7 +40,7 @@ const BoardEdit = () => {
 
         fetchCategories();
         fetchBoardDetail();
-    }, []);
+    }, [id]);
 
     const fetchCategories = async () => {
         try {
@@ -186,7 +186,7 @@ const BoardEdit = () => {
                     <div className="form-group">
                         <label htmlFor="content">내용</label>
                         <textarea
-                            id="text"
+                            id="content"
                             name="content"
                             value={formData.content}
                             onChange={handleChange}
@@ -256,7 +256,7 @@ const BoardEdit = () => {
                             취소
                         </button>
                         <button
-                            type="button"
+                            type="submit"
                             className="btn-submit"
                             disabled={loading}
                         >

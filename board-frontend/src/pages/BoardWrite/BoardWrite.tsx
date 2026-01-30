@@ -151,7 +151,7 @@ const BoardWrite = () => {
                     <div className="form-group">
                         <label htmlFor="content">내용</label>
                         <textarea
-                            id="text"
+                            id="content"
                             name="content"
                             value={formData.content}
                             onChange={handleChange}
