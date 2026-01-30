@@ -1,10 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
 import "./BoardEdit.css";
-import { useEffect, useState } from "react";
-import { Category } from "../../types";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { BoardUpdateRequest, Category } from "../../types";
 import { getCategories } from "../../api/category";
-import { getBoardDetail } from "../../api/board";
+import { getBoardDetail, updateBoard } from "../../api/board";
 import { getImageUrl } from "../../config/imageUrl";
+import { uploadImages } from "../../api/upload";
 
 interface FormData {
     title: string;
@@ -26,7 +27,7 @@ const BoardEdit = () => {
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [previewUrls, setPreviewUrls] = useState<string[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
-    const [existingImgUrls, setExistingImgUrls] = useState<string[]>([]);
+    const [existingImages, setExistingImages] = useState<string[]>([]);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -82,9 +83,95 @@ const BoardEdit = () => {
         }
     }
 
-    return (
-        <div>
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
 
+        if (!id) return;
+
+        if (!formData.title.trim() || !formData.content.trim()) {
+            alert('제목과 내용을 입력해주세요.');
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            let newImageUrl: string[] = [];
+
+            // 새로 추가된 이미지가 있으면 업로드
+            if (selectedFiles.length > 0) {
+                const uploadResults = await uploadImages(selectedFiles);
+                newImageUrl = uploadResults.map(result => result.imageUrl);
+            }
+
+            // 기존 이미지 + 새 이미지 합치기
+            const allImagesUrls = [...formData.imageUrls, ...newImageUrl];
+
+            const boardData: BoardUpdateRequest = {
+                title: formData.title,
+                content: formData.content,
+                imageUrls: allImagesUrls
+            };
+
+            await updateBoard(parseInt(id), boardData);
+            alert('게시글이 수정되었습니다.');
+            navigate(`/boards/${id}`);
+        } catch (error) {
+            console.error('게시글 수정 실패: ', error);
+            alert('게시글 수정에 실패했습니다.');
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const handleChange = async (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    }
+
+    return (
+        <div className="board-write-container">
+            <div className="board-write-wrapper">
+                <h1>게시글 수정</h1>
+                <form onSubmit={handleSubmit} className="write-from">
+                    <div className="form-group">
+                        <label htmlFor="title">제목</label>
+                        <input 
+                            type="text"
+                            id="title"
+                            name="title"
+                            value={formData.title}
+                            onChange={handleChange}
+                            placeholder="제목을 입력하세요"
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="content">내용</label>
+                        <textarea
+                            id="content"
+                            name="content"
+                            value={formData.content}
+                            onChange={handleChange}
+                            placeholder="내용을 입력하세요"
+                            rows={15}
+                            required
+                        />
+                    </div>
+                    {/* 기존 이미지 */}
+                    {existingImgUrls.length > 0 && (
+                        <div className="form-group">
+                            <label>기존 이미지</label>
+                            <div className="image-preview-list">
+                                {existingImages}
+                            </div>
+                        </div>
+                    )}
+                </form>
+            </div>
         </div>
     );
 }
