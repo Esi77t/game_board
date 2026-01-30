@@ -75,7 +75,7 @@ const BoardEdit = () => {
             });
 
             const existingImgUrls = board.images.map(img => getImageUrl(img.imageUrl) || '');
-            setExistingImgUrls(existingImgUrls);
+            setExistingImages(existingImgUrls);
         } catch (error) {
             console.error('게시글 조회 실패: ', error);
             alert('게시글을 불러오는데 실패했습니다.');
@@ -132,6 +132,40 @@ const BoardEdit = () => {
         }));
     }
 
+    const removeExistingImage = (index: number) => {
+        setExistingImages(prev => prev.filter((_, i) => i !== index));
+        setFormData(prev => ({
+            ...prev,
+            imageUrls: prev.imageUrls.filter((_, i) => i !== index)
+        }));
+    }
+
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (!files) return;
+
+        const fileArray = Array.from(files);
+        setSelectedFiles(prev => [...prev, ...fileArray]);
+
+        // 미리보기 URL 생성
+        const newPreviewUrls = fileArray.map(file => URL.createObjectURL(file));
+        setPreviewUrls(prev => [...prev, ...newPreviewUrls]);
+    }
+
+    const removeNewImage = (index: number) => {
+        setSelectedFiles(prev => prev.filter((_, i) => i !== index));
+        setPreviewUrls(prev => {
+            URL.revokeObjectURL(prev[index]);
+            return prev.filter((_, i) => i !== index);
+        })
+    }
+
+    const handleCancel = () => {
+        if (window.confirm('수정을 취소하시겠습니까?')) {
+            navigate(`/boards/${id}`);
+        }
+    }
+
     return (
         <div className="board-write-container">
             <div className="board-write-wrapper">
@@ -152,7 +186,7 @@ const BoardEdit = () => {
                     <div className="form-group">
                         <label htmlFor="content">내용</label>
                         <textarea
-                            id="content"
+                            id="text"
                             name="content"
                             value={formData.content}
                             onChange={handleChange}
@@ -162,14 +196,73 @@ const BoardEdit = () => {
                         />
                     </div>
                     {/* 기존 이미지 */}
-                    {existingImgUrls.length > 0 && (
+                    {existingImages.length > 0 && (
                         <div className="form-group">
                             <label>기존 이미지</label>
                             <div className="image-preview-list">
-                                {existingImages}
+                                {existingImages.map((url, index) => (
+                                    <div key={`existing-${index}`} className="image-preview-item">
+                                        <img src={url} alt={`기존 이미지 ${index + 1}`} />
+                                        <button
+                                            type="button"
+                                            className="remove-image-btn"
+                                            onClick={() => removeExistingImage(index)}
+                                        >
+                                            X
+                                        </button>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     )}
+                    {/* 새 이미지 추가 */}
+                    <div className="form-group">
+                        <label htmlFor="images">이미지 추가</label>
+                        <input 
+                            type="file"
+                            id="images"
+                            name="images"
+                            accept="image/*"
+                            multiple
+                            onChange={handleFileChange}
+                        />
+                        {previewUrls.length > 0 && (
+                            <div className="image-preview-list">
+                                {previewUrls.map((url, index) => (
+                                    <div 
+                                        key={`new-${index}`}
+                                        className="image-preview-item"
+                                    >
+                                        <img src={url} alt={`새 이미지 ${index + 1}`} />
+                                        <button
+                                            type="button"
+                                            className="remove-image-btn"
+                                            onClick={() => removeNewImage(index)}
+                                        >
+                                            X
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                    <div className="form-actions">
+                        <button
+                            type="button"
+                            className="btn-cancel"
+                            onClick={handleCancel}
+                            disabled={loading}
+                        >
+                            취소
+                        </button>
+                        <button
+                            type="button"
+                            className="btn-submit"
+                            disabled={loading}
+                        >
+                            {loading ? '수정 중' : '수정하기'}
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

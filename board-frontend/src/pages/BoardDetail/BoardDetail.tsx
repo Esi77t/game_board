@@ -62,7 +62,7 @@ const BoardDetail = () => {
     const isAuthor = currentUser && board && currentUser.id === board.authorId;
 
     const handleEdit = () => {
-        navigate(`/boards/edit/${id}`);
+        navigate(`/boards/${id}/edit`);
     }
 
     const formatDate = (dateString: string): string => {

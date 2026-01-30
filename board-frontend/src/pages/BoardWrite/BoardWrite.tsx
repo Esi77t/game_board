@@ -78,7 +78,7 @@ const BoardWrite = () => {
 
             const response = await createBoard(boardData);
             alert('게시글이 작성되었습니다.')
-            navigate(`/board/${response.id}`);
+            navigate(`/boards/${response.id}`);
         } catch (error) {
             console.error('게시글 작성 실패: ', error);
             alert('게시글 작성에 실패했습니다.');
