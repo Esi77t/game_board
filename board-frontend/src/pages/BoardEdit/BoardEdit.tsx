@@ -40,7 +40,7 @@ const BoardEdit = () => {
 
         fetchCategories();
         fetchBoardDetail();
-    });
+    }, []);
 
     const fetchCategories = async () => {
         try {
