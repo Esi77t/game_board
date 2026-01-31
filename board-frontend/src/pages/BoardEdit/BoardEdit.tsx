@@ -169,8 +169,8 @@ const BoardEdit = () => {
     return (
         <div className="board-write-container">
             <div className="board-write-wrapper">
-                <h1>게시글 수정</h1>
-                <form onSubmit={handleSubmit} className="write-from">
+                <h2>게시글 수정</h2>
+                <form onSubmit={handleSubmit} className="write-form">
                     <div className="form-group">
                         <label htmlFor="title">제목</label>
                         <input 

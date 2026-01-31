@@ -115,7 +115,7 @@ const BoardWrite = () => {
         <div className="board-write-container">
             <div className="board-write">
                 <h2>게시글 작성</h2>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className="write-form">
                     {categories.length > 0 && (
                         <div className="form-group">
                             <label htmlFor="categoryId">카테고리</label>

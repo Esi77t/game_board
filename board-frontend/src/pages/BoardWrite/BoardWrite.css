@@ -16,6 +16,11 @@
     color: var(--text-color);
 }
 
+.write-form {
+    display: flex;
+    flex-direction: column;
+}
+
 .form-group {
     margin-bottom: 1.5rem;
 }
@@ -146,4 +151,27 @@
 .submit-button:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+    .board-write {
+        padding: 1.5rem;
+    }
+
+    .board-write h1 {
+        font-size: 1.5rem;
+    }
+
+    .image-preview-list {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .cancel-button,
+    .submit-button {
+        width: 100%;
+    }
 }
