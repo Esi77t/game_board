@@ -9,8 +9,8 @@ export const getBoardList = async (page: number = 0, size: number = 10): Promise
 };
 
 // 게시글 상세 조회
-export const getBoardDetail = async (boardId: number): Promise<Board> => {
-    const response = await instance.get<Board>(`/boards/${boardId}`);
+export const getBoardDetail = async (boardId: number, incrementView: boolean = true): Promise<Board> => {
+    const response = await instance.get<Board>(`/boards/${boardId}?incrementView=${incrementView}`);
     return response.data;
 };
 

@@ -29,12 +29,17 @@ const BoardDetail = () => {
             setCurrentUser(JSON.parse(userData));
         }
 
+    }, []);
+
+    useEffect(() => {
         fetchBoardDetail();
         fetchComments();
     }, [id]);
 
     const fetchBoardDetail = async () => {
         if (!id) return;
+
+        // console.log('🔍 fetchBoardDetail 호출됨 - ID:', id);
 
         try {
             const data = await getBoardDetail(parseInt(id));

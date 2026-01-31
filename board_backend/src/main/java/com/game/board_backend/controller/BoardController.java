@@ -43,9 +43,10 @@ public class BoardController {
     @GetMapping("/{boardId}")
     public ResponseEntity<BoardDto.Response> getBoard(
             @PathVariable Long boardId,
+            @RequestParam(defaultValue = "true") boolean incrementView,
             Authentication authentication) {
         Long currentUserId = authentication != null ? (Long) authentication.getPrincipal() : null;
-        BoardDto.Response response = boardService.getBoard(boardId, currentUserId);
+        BoardDto.Response response = boardService.getBoard(boardId, currentUserId, incrementView);
 
         return ResponseEntity.ok(response);
     }

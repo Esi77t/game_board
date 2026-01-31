@@ -55,7 +55,7 @@ const BoardEdit = () => {
         if (!id) return;
 
         try {
-            const board = await getBoardDetail(parseInt(id));
+            const board = await getBoardDetail(parseInt(id), false);
 
             const currentUserStr = localStorage.getItem('user');
             if (currentUserStr) {

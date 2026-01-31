@@ -28,13 +28,13 @@ instance.interceptors.request.use(
 // 응답 인터셉터(예외 처리)
 instance.interceptors.response.use(
     (response) => {
-        console.log('[Axios Response]', response.config.url, 'Status:', response.status);
-        console.log('[Response Data]', response.data);
+        // console.log('[Axios Response]', response.config.url, 'Status:', response.status);
+        // console.log('[Response Data]', response.data);
         return response;
     },
     (error: AxiosError) => {
-        console.error('[Axios Error]', error.config?.url, error.message);
-        console.error('[Error Response]', error.response?.data);
+        // console.error('[Axios Error]', error.config?.url, error.message);
+        // console.error('[Error Response]', error.response?.data);
         // 401 에러(인증 실패) 처리
         if (error.response?.status === 401) {
             localStorage.removeItem('token');

@@ -4,6 +4,7 @@ import com.game.board_backend.dto.BoardDto;
 import com.game.board_backend.model.*;
 import com.game.board_backend.repository.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class BoardService {
 
     private final BoardRepository boardRepository;
@@ -66,12 +68,14 @@ public class BoardService {
 
     // 게시글 상세 조회(조회수 증가)
     @Transactional
-    public BoardDto.Response getBoard(Long boardId, Long currentUserId) {
+    public BoardDto.Response getBoard(Long boardId, Long currentUserId, boolean incrementView) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
 
         // 조회수 증가
-        board.increaseViewCount();
+        if (incrementView) {
+            board.increaseViewCount();
+        }
 
         // 이미지 목록
         List<BoardDto.ImageInfo> imageInfos = getImageInfos(boardId);
