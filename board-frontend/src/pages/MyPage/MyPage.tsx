@@ -53,6 +53,7 @@ const MyPage = () => {
         }
     }
 
+    // 프로필 이미지 변경
     const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
@@ -72,6 +73,11 @@ const MyPage = () => {
 
                 // localstorage 업데이트
                 localStorage.setItem('user', JSON.stringify(updatedUser));
+
+                window.dispatchEvent(new Event('storage-update'));
+
+                alert('프로필이 수정되었습니다.');
+                setIsEditMode(false);
             }
 
             alert('프로필 이미지가 변경되었습니다.');
@@ -95,6 +101,7 @@ const MyPage = () => {
         setIsEditMode(!isEditMode);
     }
 
+    // 프로필 저장
     const handleProfileSave = async () => {
         if (!editData.nickname.trim()) {
             alert('닉네임을 입력해주세요');
@@ -113,7 +120,11 @@ const MyPage = () => {
             // localstorage에 업데이트
             localStorage.setItem('user', JSON.stringify(updatedUser));
 
+            // Header에 알림
+            window.dispatchEvent(new Event('storage-update'));
+
             alert('프로필이 수정되었습니다.');
+            setIsEditMode(false);
         } catch (error: any) {
             console.error('프로필 수정 실패: ', error);
             alert(error.response?.data?.message || '프로필 수정에 실패했습니다.')

@@ -39,7 +39,7 @@ const Login = () => {
         } catch (error: any) {
             setError(error.response?.data?.message || '로그인에 실패했습니다.');
         } finally {
-            setLoading(true);
+            setLoading(false);
         }
     };
 

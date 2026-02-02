@@ -36,7 +36,7 @@ public class FileStorageService {
 
             // 파일 확장자 체크
             String extension = getFileExtension(originalFileName);
-            if (isAllowedExtension(extension)) {
+            if (!isAllowedExtension(extension)) {
                 throw new IllegalArgumentException("허용되지 않는 파일 형식입니다: " + extension);
             }
 

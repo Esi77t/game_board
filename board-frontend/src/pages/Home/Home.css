@@ -8,7 +8,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     flex-wrap: wrap;
     gap: 1rem;
 }
@@ -93,7 +93,8 @@
 .loading,
 .empty-message {
     text-align: center;
-    padding: 3rem;
+    padding: 5rem 0;
     color: #999;
     font-size: 1.1rem;
+    width: 100%;
 }

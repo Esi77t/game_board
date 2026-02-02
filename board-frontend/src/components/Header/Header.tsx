@@ -8,14 +8,31 @@ const Header = () => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [user, setUser] = useState<User | null>(null);
 
-    useEffect(() => {
-        // 로그인 상태 확인
+    const checkLoginStatus = () => {
         const token = localStorage.getItem('token');
         const userData = localStorage.getItem('user');
 
         if (token && userData) {
             setIsLoggedIn(true);
             setUser(JSON.parse(userData));
+        } else {
+            setIsLoggedIn(false);
+            setUser(null);
+        }
+    }
+
+    useEffect(() => {
+        // 로그인 상태 확인
+        checkLoginStatus();
+
+        const handleStorageChange = () => {
+            checkLoginStatus();
+        };
+
+        window.addEventListener('storage-update', handleStorageChange);
+
+        return () => {
+            window.removeEventListener('storage-update', handleStorageChange);
         }
     }, []);
 

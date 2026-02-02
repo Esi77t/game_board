@@ -7,6 +7,7 @@ import Login from './components/Login/Login'
 import BoardWrite from './pages/BoardWrite/BoardWrite'
 import BoardDetail from './pages/BoardDetail/BoardDetail'
 import BoardEdit from './pages/BoardEdit/BoardEdit'
+import MyPage from './pages/MyPage/MyPage'
 
 function App() {
     return (
@@ -20,6 +21,7 @@ function App() {
                     <Route path="/boards/write" element={<BoardWrite />} />
                     <Route path="/boards/:id" element={<BoardDetail />}/>
                     <Route path="/boards/:id/edit" element={<BoardEdit />}/>
+                    <Route path="/mypage" element={<MyPage />} />
                 </Routes>
             </main>
         </div>
